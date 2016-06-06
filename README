@@ -1,0 +1,68 @@
+Web crawler
+————————————————————————————
+
+For this project we have to solve the two main projects:
+1. Login into the fake book and maintain the session ID from the server to keep the connection live throughout the web crawling process
+2. Collect lists of friends from each friend of the home user and traverse through them neglecting the mutual friends (duplicate friends list) among all the users.
+3. Catching the secret flag if present using regular expression while traversing through each page
+
+High Level Approach:
+————————————————————————————
+
+Created the socket connection.
+
+Retrieved the csrftoken and session-id from server response before login.
+
+Used CSRF token, session ID to post the login details in the login page.
+
+After server sends OK response collected the friend list of the user from the home page
+
+Stored all the friends in a list and start traversing one by one
+
+For the first friend (for ex: joe) in the list, joe’s friend list is collected and all the friends are appended to the existing list
+
+First friend of joe is accessed and same process is repeated again
+
+For each values stored in the list, before it is compared with the previous values to avoid any duplicate entries.
+
+A separate search list is maintained to traverse all the unique friend list one by one
+
+While traversing all the home and friend list pages of all the friends the secret flags are collected if found using regex pattern
+
+All the internal server error are handled and connection is either continued or reset if requirements are met.
+
+Shell script is written to execute the program and use valid arguments
+
+Challenges:
+———————————————————————————
+
+Frequent disconnects from the server
+
+Exchange of responses for given requests
+
+302 found and 500 internal server error problems
+
+loops
+
+partially received html message responses
+
+Test Cases:
+———————————————————————————
+
+Working:
+
+./webcrawler 001719476 TNFELRVZ
+./webcrawler 001729445 90JO5TW0
+
+Will Not Work:
+
+./webcrawler 001729445 90JO5TW0 8903jnjf (invalid no.of arguments)
+./webcrawler 001729445 
+./webcrawler 001779445 83894ifb (random password)
+./webcrawler 1729445 90JO5TW0 (NUID with out leading zeroes, if given with another leading no.s, valid only on 9 digits, no strings)
+./webcrawler 
+
+
+
+
+
